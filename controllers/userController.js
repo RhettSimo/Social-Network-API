@@ -1,4 +1,3 @@
-const { ObjectId } = require('mongoose').Types;
 const { User, Thought } = require('../models');
 
 
@@ -17,14 +16,15 @@ module.exports = {
   // Get a single student
   getUser(req, res) {
     User.findOne({ _id: req.params.userId })
-      .select('-__v')
-      .then((user) => {
-        return res.json(user);
-       })
-      .catch((err) => {
-        console.log(err);
-        return res.status(500).json(err);
-      });
+      .populate("thoughts")
+      .populate("friends")
+      .select("-__v")
+      .then((user) =>
+        !user
+          ? res.status(404).json({ message: "No User found with that ID" })
+          : res.json(user)
+      )
+      .catch((err) => res.status(500).json(err));
   },
   // create a new student
   createUser(req, res) {
@@ -34,7 +34,7 @@ module.exports = {
   },
 
   updateUser(req, res) {
-    User.findOneAndUpdate( { _id: req.params.userId }, {$set: {username: req.body}}, {new: true})
+    User.findOneAndUpdate( { _id: req.params.userId }, {$set: {username: req.body}}, {runValidators: true, new: true})
       .then((user) => res.json(user))
       .catch((err) => res.status(500).json(err));
   },
