@@ -25,6 +25,20 @@ connection.once('open', async () => {
     },
   ];
 
+  const thoughts = [
+    {
+      thoughtText: "Have a fantastic day!",
+      username: "Rhett"
+    },
+    {
+      thoughtText: "My favorite food is spaghetti.",
+      username: "Jack"
+    },
+    {
+      thoughtText: "Have you ever wondered why the sky is blue?",
+      username: "Jeremy"
+    }
+  ];
   // seed thoughts
 
   await User.collection.insertMany(users);
