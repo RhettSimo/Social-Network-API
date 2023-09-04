@@ -39,9 +39,9 @@ connection.once('open', async () => {
       username: "Jeremy"
     }
   ];
-  // seed thoughts
 
   await User.collection.insertMany(users);
+  await Thought.collection.insertMany(thoughts);
 
   // Log out the seed data to indicate what should appear in the database
   console.table(users);
